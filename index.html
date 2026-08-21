@@ -1,0 +1,495 @@
+<html style="margin:0;padding:0;">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+(function(){
+  var s = document.createElement('style');
+  s.textContent = `
+    :root {
+      --bg: #1f1f21;
+      --card: #2a2a2d;
+      --text: #f4f4f5;
+      --muted: #a1a1a8;
+      --accent: #7aac2b;
+      --accent-soft: rgba(122,172,43,.18);
+      --accent2: #c4a87c;
+      --accent2-soft: rgba(196,168,124,.18);
+      --border: rgba(161,161,168,.18);
+      --shadow: 0 25px 60px rgba(0,0,0,.4);
+    }
+    [data-theme="light"] {
+      --bg: #fafaf7;
+      --card: #ffffff;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #5a8a1f;
+      --accent-soft: rgba(90,138,31,.12);
+      --accent2: #a88654;
+      --accent2-soft: rgba(168,134,84,.12);
+      --border: rgba(0,0,0,.08);
+      --shadow: 0 25px 60px rgba(0,0,0,.1);
+    }
+
+    /* Loading Screen */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity .6s ease, visibility .6s ease;
+    }
+    #loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .loader-ring {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 4px solid var(--border);
+      border-top-color: var(--accent);
+      border-right-color: var(--accent2);
+      animation: spin 1.2s linear infinite;
+      margin-bottom: 24px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .loader-bar {
+      width: 200px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 16px;
+    }
+    .loader-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 4px;
+      animation: load 2.2s ease forwards;
+    }
+    @keyframes load {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+    .loader-text {
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      margin-top: 16px;
+      font-family: 'Syne', sans-serif;
+    }
+
+    /* Main Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp .8s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+    .reveal:nth-child(2) { animation-delay: .15s; }
+    .reveal:nth-child(3) { animation-delay: .3s; }
+    .reveal:nth-child(4) { animation-delay: .45s; }
+    .reveal:nth-child(5) { animation-delay: .6s; }
+    .reveal:nth-child(6) { animation-delay: .75s; }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Floating Animation */
+    .float {
+      animation: float 6s ease-in-out infinite;
+    }
+    .float-delayed {
+      animation: float 6s ease-in-out infinite;
+      animation-delay: -3s;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(3deg); }
+    }
+
+    /* Gear Animation */
+    .gear {
+      animation: rotate 8s linear infinite;
+      transform-origin: center;
+    }
+    .gear-reverse {
+      animation: rotate-reverse 6s linear infinite;
+      transform-origin: center;
+    }
+    @keyframes rotate {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes rotate-reverse {
+      to { transform: rotate(-360deg); }
+    }
+
+    /* Pulse Animation */
+    .pulse-dot {
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(1.2); }
+    }
+
+    /* Progress Bar */
+    .progress-track {
+      height: 8px;
+      background: var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 72%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 8px;
+      position: relative;
+      animation: progressGrow 2s ease-out .5s both;
+    }
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+    @keyframes progressGrow {
+      from { width: 0%; }
+      to { width: 72%; }
+    }
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Card Hover */
+    .feature-card {
+      transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow);
+      border-color: var(--accent);
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .3s ease;
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: rotate(15deg);
+    }
+
+    /* Social Links */
+    .social-link {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .3s ease;
+      text-decoration: none;
+    }
+    .social-link:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-4px) scale(1.05);
+    }
+    .social-link.tiktok:hover {
+      color: #000;
+      border-color: #000;
+      background: linear-gradient(135deg, #25F4EE, #FE2C55);
+    }
+    .social-link.instagram:hover {
+      color: #fff;
+      border-color: #E1306C;
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    }
+    .social-link.facebook:hover {
+      color: #fff;
+      border-color: #1877F2;
+      background: #1877F2;
+    }
+    [data-theme="light"] .social-link.tiktok:hover {
+      color: #fff;
+    }
+
+    /* Background Particles */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: .15;
+      animation: particleFloat 15s infinite ease-in-out;
+    }
+    @keyframes particleFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(30px, -40px) scale(1.1); }
+      50% { transform: translate(-20px, -80px) scale(.9); }
+      75% { transform: translate(40px, -30px) scale(1.05); }
+    }
+
+    /* Gradient Text */
+    .gradient-text {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    /* Smooth transitions for theme switch */
+    * {
+      transition: background-color .4s ease, color .4s ease, border-color .4s ease, box-shadow .4s ease;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Syne', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+  `;
+  document.head.appendChild(s);
+})();
+</script>
+<div style="background-color:transparent;box-sizing:border-box;">
+  <div id="loader">
+    <div class="loader-ring"></div>
+    <div style="color:var(--text);font-size:18px;font-weight:600;font-family:'Syne',sans-serif;">Memuat</div>
+    <div class="loader-bar">
+      <div class="loader-bar-fill"></div>
+    </div>
+    <div class="loader-text">Sedang menyiapkan sesuatu yang keren</div>
+  </div>
+
+  <div style="position:relative;min-height:800px;background:var(--bg);font-family:'Syne',sans-serif;overflow:hidden;">
+    <!-- Background Particles -->
+    <div class="particle" style="width:120px;height:120px;top:10%;left:5%;animation-delay:0s;"></div>
+    <div class="particle" style="width:80px;height:80px;top:60%;left:85%;background:var(--accent2);animation-delay:-5s;"></div>
+    <div class="particle" style="width:60px;height:60px;top:30%;left:70%;animation-delay:-2s;"></div>
+    <div class="particle" style="width:100px;height:100px;top:75%;left:15%;background:var(--accent2);animation-delay:-8s;"></div>
+    <div class="particle" style="width:40px;height:40px;top:20%;left:45%;animation-delay:-4s;"></div>
+
+    <!-- Radial Gradient Background -->
+    <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 30% 20%, var(--accent-soft), transparent 50%), radial-gradient(ellipse at 70% 80%, var(--accent2-soft), transparent 50%);pointer-events:none;"></div>
+
+    <div class="max-w-6xl mx-auto px-6 py-10 relative" style="z-index:1;">
+      <!-- Header with Theme Toggle -->
+      <header class="reveal flex items-center justify-between mb-16">
+        <div class="flex items-center gap-3">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <span style="font-weight:700;font-size:20px;color:var(--text);">Layanan Informasi Kependudukan</span>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <svg id="icon-sun" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg id="icon-moon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </header>
+
+      <!-- Hero Section -->
+      <main>
+        <div class="reveal text-center mb-14">
+          <!-- Animated Gears Illustration -->
+          <div class="mb-10 relative inline-block" style="width:140px;height:140px;">
+            <svg class="gear" style="position:absolute;top:0;left:0;color:var(--accent);" width="90" height="90" viewBox="0 0 100 100" fill="currentColor">
+              <path d="M50 15 L55 5 L65 8 L63 20 L75 25 L85 18 L92 28 L82 37 L85 50 L95 55 L92 65 L80 63 L75 75 L82 85 L72 92 L63 82 L50 85 L45 95 L35 92 L37 80 L25 75 L18 85 L8 75 L18 63 L15 50 L5 45 L8 35 L20 37 L25 25 L18 15 L28 8 L37 18 L50 15 Z M50 35 A15 15 0 1 0 50 65 A15 15 0 1 0 50 35 Z"/>
+            </svg>
+            <svg class="gear-reverse" style="position:absolute;top:40px;left:55px;color:var(--accent2);" width="60" height="60" viewBox="0 0 100 100" fill="currentColor">
+              <path d="M50 15 L55 5 L65 8 L63 20 L75 25 L85 18 L92 28 L82 37 L85 50 L95 55 L92 65 L80 63 L75 75 L82 85 L72 92 L63 82 L50 85 L45 95 L35 92 L37 80 L25 75 L18 85 L8 75 L18 63 L15 50 L5 45 L8 35 L20 37 L25 25 L18 15 L28 8 L37 18 L50 15 Z M50 35 A15 15 0 1 0 50 65 A15 15 0 1 0 50 35 Z"/>
+            </svg>
+          </div>
+
+          <div class="mb-4">
+            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full" style="background:var(--accent-soft);border:1px solid var(--accent);color:var(--text);font-size:13px;font-weight:500;">
+              <span class="pulse-dot inline-block w-2 h-2 rounded-full" style="background:var(--accent);"></span>
+              SEDANG DALAM PERBAIKAN
+            </span>
+          </div>
+
+          <h1 style="font-size:clamp(32px,6vw,64px);font-weight:700;line-height:1.1;color:var(--text);margin-bottom:20px;">
+            Kami sedang <span class="gradient-text">membangun</span><br>sesuatu yang luar biasa
+          </h1>
+
+          <p style="color:var(--muted);font-size:clamp(15px,2vw,18px);max-width:600px;margin:0 auto 36px;line-height:1.7;">
+            Website ini sedang dalam tahap pengembangan dan perbaikan. Kami bekerja keras untuk memberikan pengalaman terbaik bagi Anda. Segera hadir dengan fitur-fitur baru yang menarik!
+          </p>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="reveal max-w-2xl mx-auto mb-16 p-8 rounded-3xl" style="background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow);">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <div style="width:36px;height:36px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              </div>
+              <span style="font-weight:600;color:var(--text);">Progres Pengembangan</span>
+            </div>
+            <span style="font-weight:700;font-size:24px;color:var(--accent);">66%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill"></div>
+          </div>
+          <div class="flex justify-between mt-3" style="font-size:13px;color:var(--muted);">
+            <span>Perencanaan selesai</span>
+            <span>Pengujian &amp; Peluncuran</span>
+          </div>
+        </div>
+
+        <!-- Feature Cards -->
+        <div class="reveal grid grid-cols-1 md:grid-cols-3 gap-5 mb-16">
+          <div class="feature-card p-6 rounded-2xl" style="background:var(--card);border:1px solid var(--border);">
+            <div class="float mb-5 inline-flex items-center justify-center" style="width:52px;height:52px;border-radius:14px;background:var(--accent-soft);color:var(--accent);">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <h3 style="font-weight:700;font-size:18px;color:var(--text);margin-bottom:8px;">Desain Modern</h3>
+            <p style="color:var(--muted);font-size:14px;line-height:1.6;">Antarmuka yang bersih, elegan, dan mengikuti tren desain terkini untuk kenyamanan mata Anda.</p>
+          </div>
+
+          <div class="feature-card p-6 rounded-2xl" style="background:var(--card);border:1px solid var(--border);">
+            <div class="float-delayed mb-5 inline-flex items-center justify-center" style="width:52px;height:52px;border-radius:14px;background:var(--accent2-soft);color:var(--accent2);">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+            </div>
+            <h3 style="font-weight:700;font-size:18px;color:var(--text);margin-bottom:8px;">Responsif Penuh</h3>
+            <p style="color:var(--muted);font-size:14px;line-height:1.6;">Tampilan sempurna di semua perangkat — desktop, tablet, maupun smartphone Anda.</p>
+          </div>
+
+          <div class="feature-card p-6 rounded-2xl" style="background:var(--card);border:1px solid var(--border);">
+            <div class="float mb-5 inline-flex items-center justify-center" style="width:52px;height:52px;border-radius:14px;background:var(--accent-soft);color:var(--accent);">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+            </div>
+            <h3 style="font-weight:700;font-size:18px;color:var(--text);margin-bottom:8px;">Performa Cepat</h3>
+            <p style="color:var(--muted);font-size:14px;line-height:1.6;">Dioptimalkan untuk kecepatan loading tinggi agar Anda tidak perlu menunggu lama.</p>
+          </div>
+        </div>
+
+        <!-- Social Media Section -->
+        <div class="reveal max-w-2xl mx-auto mb-16 p-8 rounded-3xl text-center" style="background:linear-gradient(135deg, var(--accent-soft), var(--accent2-soft));border:1px solid var(--border);">
+          <h3 style="font-weight:700;font-size:22px;color:var(--text);margin-bottom:10px;">Ikuti kami di media sosial</h3>
+          <p style="color:var(--muted);font-size:15px;margin-bottom:28px;">Dapatkan update terbaru tentang progres pengembangan website</p>
+          <div class="flex items-center justify-center gap-4 flex-wrap">
+            <!-- TikTok -->
+            <a href="https://tiktok.com/@namaprofil" target="_blank" rel="noopener" class="social-link tiktok" aria-label="TikTok">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+              </svg>
+            </a>
+            <!-- Instagram -->
+            <a href="https://instagram.com/namaprofil" target="_blank" rel="noopener" class="social-link instagram" aria-label="Instagram">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </a>
+            <!-- Facebook -->
+            <a href="https://facebook.com/namaprofil" target="_blank" rel="noopener" class="social-link facebook" aria-label="Facebook">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer class="reveal text-center pt-8" style="border-top:1px solid var(--border);">
+        <p style="color:var(--muted);font-size:13px;">
+          <span style="color:var(--accent);font-weight:600;">&copy; 2026 NamaProyek</span> · Dibuat dengan penuh semangat · Segera hadir!
+        </p>
+      </footer>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // Loading screen
+  setTimeout(function(){
+    var loader = document.getElementById('loader');
+    if(loader) loader.classList.add('hidden');
+  }, 2600);
+
+  // Theme handling
+  var savedTheme = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateIcons(savedTheme);
+
+  window.toggleTheme = function(){
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateIcons(next);
+  };
+
+  function updateIcons(theme){
+    var sun = document.getElementById('icon-sun');
+    var moon = document.getElementById('icon-moon');
+    if(!sun || !moon) return;
+    if(theme === 'dark'){
+      sun.style.display = 'none';
+      moon.style.display = 'block';
+    } else {
+      sun.style.display = 'block';
+      moon.style.display = 'none';
+    }
+  }
+})();
+</script>
+</html>
