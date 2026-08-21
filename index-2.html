@@ -1,0 +1,863 @@
+<html style="margin:0;padding:0;">
+<head>
+<title>Dukcapil Musi Rawas Utara - Portal Informasi Kependudukan</title>
+<meta name="description" content="Portal informasi resmi Dinas Kependudukan dan Pencatatan Sipil Kabupaten Musi Rawas Utara. Layanan Pendaftaran Penduduk, Pencatatan Sipil, dan Data Kependudukan Semester 1.">
+<meta name="keywords" content="Dukcapil, Musi Rawas Utara, Kependudukan, Pencatatan Sipil, KK, KTP, Data Penduduk">
+<meta name="author" content="Dinas Dukcapil Kabupaten Musi Rawas Utara">
+<link rel="icon" type="image/png" href="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/f7702ecb32ed4a5c8ef1fb7bbdb9ecdb.png~tplv-0es2k971ck-image.image?rcl=202608211335007AB46A9C217FDCEC3ECF&rk3s=8e244e95&rrcfp=935dee89&x-expires=1787895301&x-signature=%2BxgWn%2BfQatc8txC%2FH9odiRRaQj4%3D">
+</head>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script>
+(function(){
+  var s = document.createElement('style');
+  s.textContent = `
+:root{
+  --bg:#f7fcf9;--card:#ffffff;--text:#0f172a;--muted:#64748b;
+  --accent:#0d9669;--accent-soft:rgba(13,150,105,.14);
+  --accent2:#d4724a;--accent2-soft:rgba(212,114,74,.14);
+  --border:rgba(15,23,42,.08);--shadow-sm:0 1px 3px rgba(0,0,0,.04);
+  --shadow-md:0 1px 3px rgba(0,0,0,.06);--shadow-lg:0 8px 40px rgba(13,150,105,.12);
+  --shadow-accent:0 8px 40px rgba(13,150,105,.25);
+  --bar-male:#2d7eb5;--bar-male-soft:rgba(45,126,181,.14);
+  --hero-bg:radial-gradient(1000px 500px at 10% -10%,rgba(13,150,105,.08),transparent 60%);
+  --status-open:#0d9669;--status-closed:#dc2626;--status-break:#d97706;
+}
+[data-theme="dark"]{
+  --bg:#0f1a15;--card:#16241d;--text:#e8f5ef;--muted:#8aa89a;
+  --accent:#34c794;--accent-soft:rgba(52,199,148,.18);
+  --accent2:#e8906a;--accent2-soft:rgba(232,144,106,.18);
+  --border:rgba(232,245,239,.1);--shadow-sm:0 1px 3px rgba(0,0,0,.2);
+  --shadow-md:0 1px 3px rgba(0,0,0,.3);--shadow-lg:0 8px 40px rgba(0,0,0,.3);
+  --shadow-accent:0 8px 40px rgba(52,199,148,.2);
+  --bar-male:#5ba8e0;--bar-male-soft:rgba(91,168,224,.18);
+  --hero-bg:radial-gradient(1000px 500px at 10% -10%,rgba(52,199,148,.12),transparent 60%);
+  --status-open:#34c794;--status-closed:#f87171;--status-break:#fbbf24;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Nunito',sans-serif;background:var(--hero-bg),var(--bg);color:var(--text);transition:background-color .3s,color .3s;line-height:1.6}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+/* Header & Nav */
+header{position:sticky;top:0;z-index:100;background:var(--card);border-bottom:1px solid var(--border);backdrop-filter:blur(10px)}
+nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-brand img{width:42px;height:42px;border-radius:10px;object-fit:contain}
+.nav-brand-text h2{font-weight:800;font-size:15px;color:var(--text);line-height:1.2}
+.nav-brand-text p{font-size:11px;color:var(--muted);line-height:1.2}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;position:relative;transition:color .2s}
+.nav-links a::after{content:"";position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent);transition:width .3s}
+.nav-links a:hover,.nav-links a.active{color:var(--accent)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.theme-toggle,.menu-toggle{width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text);transition:all .2s}
+.theme-toggle:hover,.menu-toggle:hover{border-color:var(--accent);color:var(--accent)}
+.menu-toggle{display:none}
+@media(max-width:768px){
+  .menu-toggle{display:flex}
+  .nav-links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;gap:0;background:var(--card);border-bottom:1px solid var(--border);padding:8px 24px}
+  .nav-links.open{display:flex}
+  .nav-links a{padding:12px 0;border-bottom:1px solid var(--border);width:100%}
+  .nav-links a:last-child{border-bottom:none}
+}
+
+/* Slider */
+.slider{position:relative;overflow:hidden;border-radius:18px;margin-bottom:56px;height:360px;box-shadow:var(--shadow-md)}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;display:flex;align-items:center;justify-content:center}
+.slide.active{opacity:1}
+.slide svg{width:100%;height:100%}
+.slide-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,150,105,.78),rgba(45,126,181,.62));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:24px}
+.slide-overlay h2{font-size:30px;font-weight:800;margin-bottom:8px}
+.slide-overlay p{font-size:15px;opacity:.92;max-width:520px}
+.slider-dots{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:10}
+.slider-dot{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.5);border:none;cursor:pointer;transition:all .3s}
+.slider-dot.active{background:#fff;transform:scale(1.2)}
+.slider-arrow{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.22);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:background .2s;font-size:20px}
+.slider-arrow:hover{background:rgba(255,255,255,.38)}
+.slider-arrow.prev{left:14px}.slider-arrow.next{right:14px}
+@media(max-width:640px){
+  .slider{height:260px}
+  .slide-overlay h2{font-size:20px}
+  .slide-overlay p{font-size:13px}
+}
+
+/* Hero */
+.hero{display:flex;flex-direction:column;gap:40px;margin-bottom:56px}
+@media(min-width:1024px){.hero{flex-direction:row;align-items:center;gap:56px}}
+.hero-content{flex:1}
+.hero-eyebrow{font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:10px}
+.hero h1{font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:14px;color:var(--text)}
+@media(min-width:768px){.hero h1{font-size:42px}}
+.hero h1 .gradient{background:linear-gradient(100deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:15px;color:var(--muted);line-height:1.7;max-width:500px;margin-bottom:24px}
+.hero-buttons{display:flex;flex-wrap:wrap;gap:12px}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:12px;font-weight:700;font-size:14px;background:var(--accent);color:#fff;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 20px rgba(13,150,105,.3);border:none;cursor:pointer}
+[data-theme="dark"] .btn-primary{color:#0f1a15}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:12px;font-weight:700;font-size:14px;background:var(--card);color:var(--text);text-decoration:none;border:1px solid var(--border);transition:border-color .2s}
+.btn-secondary:hover{border-color:var(--accent)}
+.hero-logo{flex-shrink:0;display:flex;justify-content:center}
+.hero-logo-wrapper{padding:20px;background:var(--card);border-radius:20px;border:1px solid var(--border);box-shadow:var(--shadow-lg)}
+.hero-logo-wrapper img{width:170px;height:170px;object-fit:contain}
+
+/* Service Hours Card */
+.service-hours{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:56px;box-shadow:var(--shadow-sm)}
+.sh-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.sh-icon{width:46px;height:46px;border-radius:12px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0}
+.sh-title h4{font-weight:700;font-size:15px;color:var(--text);margin-bottom:2px}
+.sh-title p{font-size:12px;color:var(--muted)}
+.sh-today{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;margin-bottom:16px}
+.sh-today.open{background:rgba(13,150,105,.1);border:1px solid rgba(13,150,105,.3)}
+.sh-today.closed{background:rgba(220,38,38,.08);border:1px solid rgba(220,38,38,.25)}
+.sh-today.break{background:rgba(217,119,6,.1);border:1px solid rgba(217,119,6,.3)}
+.sh-today-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sh-today.open .sh-today-icon{background:var(--status-open);color:#fff}
+.sh-today.closed .sh-today-icon{background:var(--status-closed);color:#fff}
+.sh-today.break .sh-today-icon{background:var(--status-break);color:#fff}
+.sh-today-info{flex:1}
+.sh-today-day{font-weight:700;font-size:14px;color:var(--text)}
+.sh-today-hours{font-size:12px;color:var(--muted)}
+.sh-status{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700}
+.sh-today.open .sh-status{background:var(--status-open);color:#fff}
+.sh-today.closed .sh-status{background:var(--status-closed);color:#fff}
+.sh-today.break .sh-status{background:var(--status-break);color:#fff}
+.sh-schedule{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:640px){.sh-schedule{grid-template-columns:repeat(2,1fr)}}
+.sh-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:8px;font-size:13px}
+.sh-row.weekday{background:var(--accent-soft)}
+.sh-row.weekend{background:rgba(128,128,128,.06)}
+.sh-row-day{font-weight:600;color:var(--text)}
+.sh-row-time{color:var(--muted);font-weight:600}
+.sh-row.weekend .sh-row-time{color:var(--status-closed)}
+
+/* Quick Stats */
+.quick-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:28px}
+@media(min-width:640px){.quick-stats{grid-template-columns:repeat(4,1fr)}}
+.quick-stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center;box-shadow:var(--shadow-sm);transition:transform .2s,box-shadow .2s}
+.quick-stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.quick-stat-num{font-size:26px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.1;margin-bottom:4px}
+.quick-stat-label{font-size:12px;color:var(--muted);font-weight:600}
+
+/* Section */
+.section{margin-bottom:56px}
+.section-header{margin-bottom:28px}
+.section-eyebrow{font-family:monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:6px}
+.section-title{font-size:26px;font-weight:800;letter-spacing:-.01em;line-height:1.2;color:var(--text)}
+
+/* Services Grid */
+.services-grid{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:768px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1024px){.services-grid{grid-template-columns:repeat(3,1fr)}}
+.service-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow-sm);transition:transform .25s,box-shadow .25s,border-color .25s}
+.service-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--accent)}
+.service-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.service-icon svg{width:22px;height:22px}
+.service-icon.green{background:var(--accent-soft);color:var(--accent)}
+.service-icon.orange{background:var(--accent2-soft);color:var(--accent2)}
+.service-icon.blue{background:var(--bar-male-soft);color:var(--bar-male)}
+.service-card h3{font-weight:800;font-size:17px;color:var(--text);margin-bottom:8px;line-height:1.3}
+.service-card p{color:var(--muted);font-size:14px;line-height:1.7}
+
+/* Population */
+.pop-total{background:linear-gradient(135deg,var(--accent),#0a7a55);color:#fff;border-radius:16px;padding:26px;margin-bottom:24px;box-shadow:var(--shadow-accent);display:flex;flex-direction:column;gap:18px}
+[data-theme="dark"] .pop-total{color:#0f1a15;background:linear-gradient(135deg,var(--accent),#1a8a65)}
+@media(min-width:768px){.pop-total{flex-direction:row;align-items:center;justify-content:space-between}}
+.pop-total-label{font-size:12px;opacity:.85;font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.pop-total-number{font-size:40px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.pop-total-sub{font-size:14px;opacity:.85;margin-top:6px}
+.pop-total-icon{width:60px;height:60px;border-radius:16px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+[data-theme="dark"] .pop-total-icon{background:rgba(15,26,21,.18)}
+.pop-total-icon svg{width:30px;height:30px}
+
+.data-grid{display:grid;grid-template-columns:1fr;gap:22px}
+@media(min-width:1024px){.data-grid{grid-template-columns:1fr 1fr}}
+.data-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;box-shadow:var(--shadow-md)}
+.data-card h3{font-weight:800;font-size:17px;color:var(--text);margin-bottom:18px}
+
+.gender-item{margin-bottom:24px}
+.gender-item:last-child{margin-bottom:0}
+.gender-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.gender-info{display:flex;align-items:center;gap:10px}
+.gender-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.gender-icon.male{background:var(--bar-male-soft);color:var(--bar-male)}
+.gender-icon.female{background:var(--accent2-soft);color:var(--accent2)}
+.gender-icon svg{width:18px;height:18px}
+.gender-name{font-weight:700;font-size:15px;color:var(--text)}
+.gender-type{font-size:12px;color:var(--muted)}
+.gender-stats{text-align:right}
+.gender-count{font-weight:800;font-size:20px;color:var(--text);font-variant-numeric:tabular-nums}
+.gender-percent{font-size:13px;font-weight:700}
+.gender-percent.male{color:var(--bar-male)}
+.gender-percent.female{color:var(--accent2)}
+.gender-bar-track{height:8px;background:rgba(128,128,128,.08);border-radius:6px;overflow:hidden}
+[data-theme="dark"] .gender-bar-track{background:rgba(255,255,255,.06)}
+.gender-bar-fill{height:100%;border-radius:6px;transition:width 1s ease}
+.gender-bar-fill.male{width:50.9%;background:linear-gradient(90deg,var(--bar-male),#4a9ad4)}
+.gender-bar-fill.female{width:49.1%;background:linear-gradient(90deg,var(--accent2),#e8906a)}
+.gender-summary{margin-top:22px;padding-top:18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.gender-summary-label{font-weight:700;font-size:14px;color:var(--text)}
+.gender-summary-value{font-weight:800;font-size:15px;color:var(--accent)}
+
+.chart-subtitle{font-size:13px;color:var(--muted);margin-bottom:12px;margin-top:-10px}
+#pieChart{height:310px;width:100%}
+.chart-legend{display:flex;align-items:center;justify-content:center;gap:28px;margin-top:4px}
+.legend-item{display:flex;align-items:center;gap:8px}
+.legend-dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+.legend-dot.male{background:var(--bar-male)}
+.legend-dot.female{background:var(--accent2)}
+.legend-text{font-size:13px;font-weight:600;color:var(--muted)}
+
+/* Footer */
+footer{background:var(--card);border-top:1px solid var(--border);margin-top:40px}
+.footer-main{padding:40px 0 28px}
+.footer-grid{display:grid;grid-template-columns:1fr;gap:28px}
+@media(min-width:768px){.footer-grid{grid-template-columns:repeat(3,1fr)}}
+.footer-col h4{font-weight:800;font-size:15px;color:var(--text);margin-bottom:14px}
+.footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.footer-brand img{width:36px;height:36px;border-radius:8px;object-fit:contain}
+.footer-brand-text p:first-child{font-weight:700;font-size:14px;color:var(--text);line-height:1.2}
+.footer-brand-text p:last-child{font-size:11px;color:var(--muted);line-height:1.2}
+.footer-desc{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px}
+.footer-contact{font-size:13px;color:var(--muted);line-height:1.7}
+.footer-contact-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+.footer-contact-item svg{width:16px;height:16px;margin-top:3px;flex-shrink:0;color:var(--accent)}
+.social-links{display:flex;gap:10px;margin-bottom:16px}
+.social-link{width:38px;height:38px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;color:var(--accent);text-decoration:none;transition:all .2s}
+.social-link:hover{background:var(--accent);color:#fff;transform:translateY(-2px)}
+[data-theme="dark"] .social-link:hover{color:#0f1a15}
+.social-link svg{width:18px;height:18px}
+.share-btn{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.share-btn:hover{border-color:var(--accent);color:var(--accent)}
+.share-btn svg{width:16px;height:16px}
+.footer-bottom{padding:16px 0;border-top:1px solid var(--border)}
+.footer-bottom-text{font-size:12px;color:var(--muted);text-align:center}
+
+/* Back to Top */
+.back-to-top{position:fixed;bottom:22px;right:22px;width:46px;height:46px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(13,150,105,.4);opacity:0;visibility:hidden;transform:translateY(20px);transition:all .3s ease;z-index:99}
+.back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
+.back-to-top:hover{transform:translateY(-3px)}
+[data-theme="dark"] .back-to-top{color:#0f1a15;box-shadow:0 4px 20px rgba(52,199,148,.4)}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(20px);animation:fadeUp .6s ease forwards}
+.reveal:nth-child(2){animation-delay:.1s}.reveal:nth-child(3){animation-delay:.2s}
+.reveal:nth-child(4){animation-delay:.3s}.reveal:nth-child(5){animation-delay:.4s}
+.reveal:nth-child(6){animation-delay:.5s}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+/* Pulse animation */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+.pulse-dot{animation:pulse 2s infinite}
+
+/* Share toast */
+.share-toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;visibility:hidden;transition:all .3s ease;z-index:100}
+.share-toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+`;
+  document.head.appendChild(s);
+})();
+</script>
+<div style="background-color:transparent;box-sizing:border-box;">
+  <div style="font-family:'Nunito',sans-serif">
+
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <nav>
+          <a href="#beranda" class="nav-brand">
+            <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/f7702ecb32ed4a5c8ef1fb7bbdb9ecdb.png~tplv-0es2k971ck-image.image?rcl=202608211335007AB46A9C217FDCEC3ECF&rk3s=8e244e95&rrcfp=935dee89&x-expires=1787895301&x-signature=%2BxgWn%2BfQatc8txC%2FH9odiRRaQj4%3D" alt="Logo Musi Rawas Utara" onerror="this.style.display='none'">
+            <div class="nav-brand-text">
+              <h2>Dinas Dukcapil</h2>
+              <p>Kab. Musi Rawas Utara</p>
+            </div>
+          </a>
+          <div class="nav-links" id="navLinks">
+            <a href="#beranda" class="active">Beranda</a>
+            <a href="#layanan">Layanan</a>
+            <a href="#data">Data Penduduk</a>
+            <a href="#kontak">Kontak</a>
+          </div>
+          <div class="nav-actions">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+              <svg id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;display:none">
+                <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+              </svg>
+              <svg id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </button>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px">
+                <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+              </svg>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <div class="container" style="padding-top:36px">
+
+      <!-- Slider -->
+      <section id="beranda" class="reveal">
+        <div class="slider" id="slider">
+          <div class="slide active">
+            <svg viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" style="background:linear-gradient(135deg,#e8f5ef,#d4e8f0)">
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" style="stop-color:#0d9669;stop-opacity:.3"/>
+                  <stop offset="100%" style="stop-color:#2d7eb5;stop-opacity:.2"/>
+                </linearGradient>
+              </defs>
+              <rect width="1200" height="400" fill="url(#g1)"/>
+              <path d="M0,300 L200,180 L350,250 L500,150 L700,240 L850,170 L1000,230 L1200,160 L1200,400 L0,400 Z" fill="rgba(13,150,105,.25)"/>
+              <path d="M0,340 L150,260 L300,310 L450,240 L600,300 L800,250 L950,300 L1100,260 L1200,290 L1200,400 L0,400 Z" fill="rgba(45,126,181,.2)"/>
+              <rect x="450" y="180" width="300" height="140" fill="rgba(255,255,255,.8)" rx="4"/>
+              <rect x="470" y="200" width="30" height="40" fill="rgba(13,150,105,.4)" rx="2"/>
+              <rect x="520" y="200" width="30" height="40" fill="rgba(13,150,105,.4)" rx="2"/>
+              <rect x="570" y="200" width="60" height="80" fill="rgba(13,150,105,.5)" rx="2"/>
+              <rect x="650" y="200" width="30" height="40" fill="rgba(13,150,105,.4)" rx="2"/>
+              <rect x="700" y="200" width="30" height="40" fill="rgba(13,150,105,.4)" rx="2"/>
+              <polygon points="600,140 440,180 760,180" fill="rgba(13,150,105,.6)"/>
+              <circle cx="100" cy="320" r="30" fill="rgba(13,150,105,.5)"/>
+              <rect x="96" y="330" width="8" height="20" fill="rgba(139,90,43,.4)"/>
+              <circle cx="1050" cy="310" r="35" fill="rgba(13,150,105,.5)"/>
+              <rect x="1046" y="325" width="8" height="25" fill="rgba(139,90,43,.4)"/>
+            </svg>
+            <div class="slide-overlay">
+              <h2>Selamat Datang di Dukcapil</h2>
+              <p>Dinas Kependudukan dan Pencatatan Sipil Kabupaten Musi Rawas Utara siap melayani Anda dengan profesional dan transparan</p>
+            </div>
+          </div>
+          <div class="slide">
+            <svg viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid slice" style="background:linear-gradient(135deg,#fef3e7,#e8f5ef)">
+              <defs>
+                <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" style="stop-color:#d4724a;stop-opacity:.25"/>
+                  <stop offset="100%" style="stop-color:#0d9669;stop-opacity:.2"/>
+                </linearGradient>
+              </defs>
+              <rect width="1200" height="400" fill="url(#g2)"/>
+              <ellipse cx="200" cy="380" rx="300" ry="80" fill="rgba(13,150,105,.2)"/>
+              <ellipse cx="1000" cy="390" rx="350" ry="70" fill="rgba(212,114,74,.15)"/>
+              <g transform="translate(500,180)">
+                <circle cx="0" cy="20" r="18" fill="rgba(45,126,181,.7)"/>
+                <rect x="-14" y="38" width="28" height="60" rx="6" fill="rgba(45,126,181,.6)"/>
+                <circle cx="50" cy="25" r="16" fill="rgba(212,114,74,.7)"/>
+                <rect x="38" y="41" width="24" height="55" rx="6" fill="rgba(212,114,74,.6)"/>
+                <circle cx="95" cy="40" r="12" fill="rgba(13,150,105,.7)"/>
+                <rect x="86" y="52" width="18" height="40" rx="5" fill="rgba(13,150,105,.6)"/>
+                <circle cx="-45" cy="42" r="11" fill="rgba(13,150,105,.7)"/>
+                <rect x="-54" y="53" width="18" height="38" rx="5" fill="rgba(13,150,105,.6)"/>
+              </g>
+              <g transform="translate(200,120)" fill="rgba(255,255,255,.85)" stroke="rgba(13,150,105,.5)" stroke-width="2">
+                <rect x="0" y="0" width="50" height="60" rx="3"/>
+                <line x1="8" y1="15" x2="42" y2="15" stroke-width="2"/>
+                <line x1="8" y1="25" x2="35" y2="25" stroke-width="2"/>
+                <line x1="8" y1="35" x2="40" y2="35" stroke-width="2"/>
+              </g>
+              <g transform="translate(920,150)" fill="rgba(255,255,255,.85)" stroke="rgba(212,114,74,.5)" stroke-width="2">
+                <rect x="0" y="0" width="50" height="60" rx="3"/>
+                <line x1="8" y1="15" x2="42" y2="15" stroke-width="2"/>
+                <line x1="8" y1="25" x2="35" y2="25" stroke-width="2"/>
+                <line x1="8" y1="35" x2="40" y2="35" stroke-width="2"/>
+              </g>
+              <g transform="translate(850,280)">
+                <rect x="0" y="0" width="120" height="75" rx="8" fill="rgba(255,255,255,.9)" stroke="rgba(13,150,105,.4)" stroke-width="2"/>
+                <rect x="8" y="15" width="30" height="40" rx="3" fill="rgba(13,150,105,.3)"/>
+                <line x1="45" y1="22" x2="110" y2="22" stroke="rgba(13,150,105,.4)" stroke-width="2"/>
+                <line x1="45" y1="35" x2="100" y2="35" stroke="rgba(13,150,105,.3)" stroke-width="2"/>
+                <line x1="45" y1="48" x2="95" y2="48" stroke="rgba(13,150,105,.3)" stroke-width="2"/>
+              </g>
+            </svg>
+            <div class="slide-overlay" style="background:linear-gradient(135deg,rgba(212,114,74,.78),rgba(13,150,105,.65))">
+              <h2>Layanan Administrasi Kependudukan</h2>
+              <p>Pendaftaran Penduduk, Pencatatan Sipil, dan Pengelolaan Informasi Administrasi untuk masyarakat Musi Rawas Utara</p>
+            </div>
+          </div>
+          <button class="slider-arrow prev" id="slidePrev">&#8249;</button>
+          <button class="slider-arrow next" id="slideNext">&#8250;</button>
+          <div class="slider-dots">
+            <button class="slider-dot active" data-slide="0"></button>
+            <button class="slider-dot" data-slide="1"></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hero -->
+      <section class="hero reveal">
+        <div class="hero-content">
+          <p class="hero-eyebrow">Dinas Kependudukan & Pencatatan Sipil</p>
+          <h1>Portal Informasi <span class="gradient">Kependudukan</span></h1>
+          <p>Kabupaten Musi Rawas Utara hadir memberikan informasi layanan kependudukan yang transparan, akurat, dan mudah diakses bagi seluruh masyarakat.</p>
+          <div class="hero-buttons">
+            <a href="#layanan" class="btn-primary">
+              Lihat Layanan
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="#data" class="btn-secondary">Data Penduduk</a>
+          </div>
+        </div>
+        <div class="hero-logo">
+          <div class="hero-logo-wrapper">
+            <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/f7702ecb32ed4a5c8ef1fb7bbdb9ecdb.png~tplv-0es2k971ck-image.image?rcl=202608211335007AB46A9C217FDCEC3ECF&rk3s=8e244e95&rrcfp=935dee89&x-expires=1787895301&x-signature=%2BxgWn%2BfQatc8txC%2FH9odiRRaQj4%3D" alt="Logo Kabupaten Musi Rawas Utara" onerror="this.style.display='none'">
+          </div>
+        </div>
+      </section>
+
+      <!-- Service Hours -->
+      <div class="service-hours reveal" id="serviceHours">
+        <div class="sh-header">
+          <div class="sh-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:22px;height:22px">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div class="sh-title">
+            <h4>Jam Layanan Kantor</h4>
+            <p>Jadwal operasional Dinas Dukcapil</p>
+          </div>
+        </div>
+        <div class="sh-today" id="todayStatus">
+          <div class="sh-today-icon" id="todayIcon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+          </div>
+          <div class="sh-today-info">
+            <div class="sh-today-day" id="todayDay">Hari Ini</div>
+            <div class="sh-today-hours" id="todayHours">08.00 - 16.00 WIB</div>
+          </div>
+          <span class="sh-status" id="todayStatusText">BUKA</span>
+        </div>
+        <div class="sh-schedule">
+          <div class="sh-row weekday"><span class="sh-row-day">Senin</span><span class="sh-row-time">08.00 - 16.00 WIB</span></div>
+          <div class="sh-row weekday"><span class="sh-row-day">Selasa</span><span class="sh-row-time">08.00 - 16.00 WIB</span></div>
+          <div class="sh-row weekday"><span class="sh-row-day">Rabu</span><span class="sh-row-time">08.00 - 16.00 WIB</span></div>
+          <div class="sh-row weekday"><span class="sh-row-day">Kamis</span><span class="sh-row-time">08.00 - 16.00 WIB</span></div>
+          <div class="sh-row weekday"><span class="sh-row-day">Jumat</span><span class="sh-row-time">08.00 - 16.30 WIB</span></div>
+          <div class="sh-row weekend"><span class="sh-row-day">Sabtu - Minggu</span><span class="sh-row-time">LIBUR</span></div>
+        </div>
+        <div style="margin-top:12px;padding:10px 14px;border-radius:10px;background:rgba(217,119,6,.08);border:1px dashed rgba(217,119,6,.3);display:flex;align-items:center;gap:10px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;color:var(--status-break);flex-shrink:0">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <span style="font-size:12px;color:var(--muted)"><strong>Istirahat:</strong> Senin-Jumat jam <strong style="color:var(--status-break)">12.00 - 13.00 WIB</strong></span>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="quick-stats reveal">
+        <div class="quick-stat"><div class="quick-stat-num">7</div><div class="quick-stat-label">Kecamatan</div></div>
+        <div class="quick-stat"><div class="quick-stat-num">89</div><div class="quick-stat-label">Desa & Kelurahan</div></div>
+        <div class="quick-stat"><div class="quick-stat-num">208.652</div><div class="quick-stat-label">Total Penduduk</div></div>
+        <div class="quick-stat"><div class="quick-stat-num">3</div><div class="quick-stat-label">Program Layanan</div></div>
+      </div>
+
+      <!-- Services Section -->
+      <section id="layanan" class="section reveal">
+        <div class="section-header">
+          <p class="section-eyebrow">Program Layanan</p>
+          <h2 class="section-title">Tiga Program Utama</h2>
+        </div>
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                <line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>
+              </svg>
+            </div>
+            <h3>Program Pendaftaran Penduduk</h3>
+            <p>Layanan pendaftaran penduduk meliputi pembuatan Kartu Keluarga (KK), Kartu Tanda Penduduk (KTP-el), dan pendataan penduduk baru untuk memastikan setiap warga tercatat secara resmi.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon orange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+              </svg>
+            </div>
+            <h3>Program Pencatatan Sipil</h3>
+            <p>Pencatatan peristiwa penting seperti kelahiran, kematian, perkawinan, perceraian, dan pengakuan anak. Setiap peristiwa sipil mendapatkan dokumen resmi sebagai bukti hukum yang sah.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+              </svg>
+            </div>
+            <h3>Program Pengelolaan Informasi Administrasi Kependudukan</h3>
+            <p>Pengelolaan dan penyajian data administrasi kependudukan secara terintegrasi melalui Sistem Informasi Administrasi Kependudukan (SIAK). Memastikan data penduduk akurat, mutakhir, dan dapat diakses.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Population Data Section -->
+      <section id="data" class="section reveal">
+        <div class="section-header">
+          <p class="section-eyebrow">Data Statistik &mdash; Semester 1</p>
+          <h2 class="section-title">Jumlah Penduduk</h2>
+        </div>
+        <div class="pop-total">
+          <div>
+            <p class="pop-total-label">Total Penduduk</p>
+            <p class="pop-total-number">208.652</p>
+            <p class="pop-total-sub">Kabupaten Musi Rawas Utara &mdash; Semester 1</p>
+          </div>
+          <div class="pop-total-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+        </div>
+        <div class="data-grid">
+          <div class="data-card">
+            <h3>Berdasarkan Jenis Kelamin</h3>
+            <div class="gender-item">
+              <div class="gender-header">
+                <div class="gender-info">
+                  <div class="gender-icon male">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="10" cy="14" r="5"/><line x1="19" y1="5" x2="13.6" y2="10.4"/><polyline points="15 5 19 5 19 9"/>
+                    </svg>
+                  </div>
+                  <div><div class="gender-name">Laki-laki</div><div class="gender-type">Penduduk</div></div>
+                </div>
+                <div class="gender-stats">
+                  <div class="gender-count">106.208</div>
+                  <div class="gender-percent male">50,90%</div>
+                </div>
+              </div>
+              <div class="gender-bar-track"><div class="gender-bar-fill male"></div></div>
+            </div>
+            <div class="gender-item">
+              <div class="gender-header">
+                <div class="gender-info">
+                  <div class="gender-icon female">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <circle cx="12" cy="9" r="5"/><line x1="12" y1="14" x2="12" y2="21"/><line x1="9" y1="18" x2="15" y2="18"/>
+                    </svg>
+                  </div>
+                  <div><div class="gender-name">Perempuan</div><div class="gender-type">Penduduk</div></div>
+                </div>
+                <div class="gender-stats">
+                  <div class="gender-count">102.444</div>
+                  <div class="gender-percent female">49,10%</div>
+                </div>
+              </div>
+              <div class="gender-bar-track"><div class="gender-bar-fill female"></div></div>
+            </div>
+            <div class="gender-summary">
+              <span class="gender-summary-label">Rasio Jenis Kelamin</span>
+              <span class="gender-summary-value">103,67 : 100</span>
+            </div>
+          </div>
+          <div class="data-card">
+            <h3>Diagram Distribusi</h3>
+            <p class="chart-subtitle">Persentase penduduk berdasarkan jenis kelamin</p>
+            <div id="pieChart"></div>
+            <div class="chart-legend">
+              <div class="legend-item"><span class="legend-dot male"></span><span class="legend-text">Laki-laki</span></div>
+              <div class="legend-item"><span class="legend-dot female"></span><span class="legend-text">Perempuan</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer id="kontak">
+      <div class="container">
+        <div class="footer-main">
+          <div class="footer-grid">
+            
+            <div class="footer-col">
+              <div class="footer-brand">
+                <img src="https://p16-flow-image-sign.ibyteimg.com/tos-mya-i-uo7y4d541q/f7702ecb32ed4a5c8ef1fb7bbdb9ecdb.png~tplv-0es2k971ck-image.image?rcl=202608211335007AB46A9C217FDCEC3ECF&rk3s=8e244e95&rrcfp=935dee89&x-expires=1787895301&x-signature=%2BxgWn%2BfQatc8txC%2FH9odiRRaQj4%3D" alt="Logo" onerror="this.style.display='none'">
+                <div class="footer-brand-text">
+                  <p>Dinas Dukcapil</p>
+                  <p>Kabupaten Musi Rawas Utara</p>
+                </div>
+              </div>
+              <p class="footer-desc">Portal informasi resmi Dinas Kependudukan dan Pencatatan Sipil Kabupaten Musi Rawas Utara. Motto: Melayani Anda dengan Profesional dan Transparan.</p>
+              <button class="share-btn" id="shareBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                </svg>
+                Bagikan
+              </button>
+            </div>
+
+            <div class="footer-col">
+              <h4>Kontak Kami</h4>
+              <div class="footer-contact">
+                <div class="footer-contact-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <span>Jl. Lintas Sumatera Desa Lawang Agung, Kecamatan Rupit, Kabupaten Musi Rawas Utara, Sumatera Selatan 31651</span>
+                </div>
+                <div class="footer-contact-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                  </svg>
+                  <span>(0734) xxx-xxxx</span>
+                </div>
+                <div class="footer-contact-item">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                    <polyline points="22,6 12,13 2,6"/>
+                  </svg>
+                  <span>xxxxxxx@muratarakab.go.id</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="footer-col">
+              <h4>Ikuti Kami</h4>
+              <div class="social-links">
+                <a href="https://www.tiktok.com/@disdukcapil.muratara" class="social-link" aria-label="TikTok" target="_blank">
+                  <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px">
+                    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                  </svg>
+                </a>
+                <a href="https://www.instagram.com/dukcapil_muratara/" class="social-link" aria-label="Instagram" target="_blank">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                  </svg>
+                </a>
+                <a href="https://www.facebook.com/disdukcapil.1613/" class="social-link" aria-label="Facebook" target="_blank">
+                  <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                  </svg>
+                </a>
+              </div>
+              <p style="font-size:12px;color:var(--muted);line-height:1.7">Dapatkan informasi terbaru seputar layanan kependudukan melalui media sosial resmi kami.</p>
+            </div>
+
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p class="footer-bottom-text">&copy; 2026 Dinas Kependudukan dan Pencatatan Sipil Kabupaten Musi Rawas Utara. Semua hak dilindungi.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Share Toast -->
+    <div class="share-toast" id="shareToast">Link disalin ke clipboard!</div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Kembali ke atas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:20px;height:20px">
+        <polyline points="18 15 12 9 6 15"/>
+      </svg>
+    </button>
+
+  </div>
+</div>
+
+<script>
+// ===== Theme Toggle =====
+(function(){
+  var themeToggle = document.getElementById('themeToggle');
+  var sunIcon = document.getElementById('sunIcon');
+  var moonIcon = document.getElementById('moonIcon');
+  var html = document.documentElement;
+  var saved = localStorage.getItem('theme');
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if(saved === 'dark' || (!saved && prefersDark)){
+    html.setAttribute('data-theme','dark');
+    sunIcon.style.display='block';moonIcon.style.display='none';
+  }
+  themeToggle.addEventListener('click',function(){
+    var isDark = html.getAttribute('data-theme') === 'dark';
+    if(isDark){
+      html.removeAttribute('data-theme');localStorage.setItem('theme','light');
+      sunIcon.style.display='none';moonIcon.style.display='block';
+    } else {
+      html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');
+      sunIcon.style.display='block';moonIcon.style.display='none';
+    }
+    if(window.pieChartInstance){window.pieChartInstance.dispose();initPieChart();}
+  });
+})();
+
+// ===== Mobile Menu Toggle =====
+(function(){
+  var menuToggle = document.getElementById('menuToggle');
+  var navLinks = document.getElementById('navLinks');
+  menuToggle.addEventListener('click',function(){navLinks.classList.toggle('open');});
+  navLinks.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click',function(){navLinks.classList.remove('open');});
+  });
+})();
+
+// ===== Slider =====
+(function(){
+  var slides = document.querySelectorAll('.slide');
+  var dots = document.querySelectorAll('.slider-dot');
+  var current = 0;
+  function showSlide(n){
+    slides.forEach(function(s){s.classList.remove('active');});
+    dots.forEach(function(d){d.classList.remove('active');});
+    current = (n + slides.length) % slides.length;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+  }
+  document.getElementById('slidePrev').addEventListener('click',function(){showSlide(current-1);});
+  document.getElementById('slideNext').addEventListener('click',function(){showSlide(current+1);});
+  dots.forEach(function(dot){
+    dot.addEventListener('click',function(){showSlide(parseInt(dot.getAttribute('data-slide')));});
+  });
+  setInterval(function(){showSlide(current+1);},5000);
+})();
+
+// ===== Dynamic Service Hours Status =====
+(function updateServiceHours(){
+  var days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  var now = new Date();
+  var dayOfWeek = now.getDay();
+  var hours = now.getHours();
+  var minutes = now.getMinutes();
+  var currentMinutes = hours * 60 + minutes;
+  
+  var todayEl = document.getElementById('todayDay');
+  var hoursEl = document.getElementById('todayHours');
+  var statusEl = document.getElementById('todayStatusText');
+  var container = document.getElementById('todayStatus');
+  var iconEl = document.getElementById('todayIcon');
+  
+  var isWeekday = dayOfWeek >= 1 && dayOfWeek <= 5;
+  var isBreak = currentMinutes >= 12*60 && currentMinutes < 13*60;
+  var isWorking = currentMinutes >= 8*60 && currentMinutes < 16*60;
+  
+  container.classList.remove('open','closed','break');
+  
+  if(!isWeekday){
+    container.classList.add('closed');
+    todayEl.textContent = days[dayOfWeek] + ' - Hari Libur';
+    hoursEl.textContent = 'Sabtu & Minggu Tutup';
+    statusEl.textContent = 'TUTUP';
+    iconEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+  } else if(isBreak){
+    container.classList.add('break');
+    todayEl.textContent = days[dayOfWeek] + ' - Jam Istirahat';
+    hoursEl.textContent = 'Istirahat: 12.00 - 13.00 WIB';
+    statusEl.textContent = 'ISTIRAHAT';
+    iconEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+  } else if(isWorking){
+    container.classList.add('open');
+    todayEl.textContent = days[dayOfWeek] + ' - Sedang Layani';
+    hoursEl.textContent = '08.00 - 16.00 WIB';
+    statusEl.textContent = 'BUKA';
+    iconEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px" class="pulse-dot"><polyline points="20 6 9 17 4 12"/></svg>';
+  } else {
+    container.classList.add('closed');
+    todayEl.textContent = days[dayOfWeek] + ' - Di Luar Jam Kerja';
+    hoursEl.textContent = 'Jam Layanan: 08.00 - 16.00 WIB';
+    statusEl.textContent = 'TUTUP';
+    iconEl.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+  }
+  
+  setTimeout(updateServiceHours, 60000);
+})();
+
+// ===== Back to Top =====
+(function(){
+  var btn = document.getElementById('backToTop');
+  window.addEventListener('scroll',function(){
+    if(window.scrollY > 300){btn.classList.add('visible');}
+    else{btn.classList.remove('visible');}
+  });
+  btn.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+})();
+
+// ===== Active nav link on scroll =====
+(function(){
+  var sections = document.querySelectorAll('section[id]');
+  var navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll',function(){
+    var scrollY = window.scrollY;
+    sections.forEach(function(section){
+      var top = section.offsetTop - 100;
+      var bottom = top + section.offsetHeight;
+      var id = section.getAttribute('id');
+      if(scrollY >= top && scrollY < bottom){
+        navLinks.forEach(function(link){
+          link.classList.remove('active');
+          if(link.getAttribute('href') === '#'+id){link.classList.add('active');}
+        });
+      }
+    });
+  });
+})();
+
+// ===== Share Button =====
+(function(){
+  var shareBtn = document.getElementById('shareBtn');
+  var shareToast = document.getElementById('shareToast');
+  
+  shareBtn.addEventListener('click',function(){
+    var url = window.location.href;
+    if(navigator.share){
+      navigator.share({
+        title: 'Dukcapil Musi Rawas Utara - Portal Informasi Kependudukan',
+        text: 'Portal informasi resmi Dinas Kependudukan dan Pencatatan Sipil Kabupaten Musi Rawas Utara',
+        url: url
+      }).catch(function(){});
+    } else {
+      navigator.clipboard.writeText(url).then(function(){
+        shareToast.classList.add('show');
+        setTimeout(function(){shareToast.classList.remove('show');},2500);
+      }).catch(function(){});
+    }
+  });
+})();
+
+// ===== Pie Chart =====
+function initPieChart(){
+  (function init(n){
+    try{
+      var el=document.getElementById('pieChart');if(!el)return;
+      if(typeof echarts==='undefined'){if(n<40){setTimeout(function(){init(n+1);},250);return;}el.textContent='Gagal memuat diagram';return;}
+      var isDark=document.documentElement.getAttribute('data-theme')==='dark';
+      var c=echarts.init(el);window.pieChartInstance=c;
+      var maleColor=isDark?'#5ba8e0':'#2d7eb5';
+      var femaleColor=isDark?'#e8906a':'#d4724a';
+      var cardBg=isDark?'#16241d':'#ffffff';
+      var textColor=isDark?'#e8f5ef':'#0f172a';
+      var mutedColor=isDark?'#8aa89a':'#64748b';
+      var borderColor=isDark?'rgba(232,245,239,.1)':'rgba(15,23,42,.08)';
+      c.setOption({
+        backgroundColor:'transparent',
+        tooltip:{trigger:'item',backgroundColor:cardBg,borderColor:borderColor,textStyle:{color:textColor,fontFamily:'Nunito'},
+          formatter:function(p){return '<strong>'+p.name+'</strong><br/>Jumlah: '+p.value.toLocaleString('id-ID')+' jiwa<br/>Persentase: '+p.percent+'%';}},
+        series:[{name:'Jenis Kelamin',type:'pie',radius:['45%','72%'],center:['50%','50%'],avoidLabelOverlap:true,
+          itemStyle:{borderRadius:10,borderColor:cardBg,borderWidth:3},
+          label:{show:true,position:'outside',formatter:'{b}\n{d}%',color:textColor,fontFamily:'Nunito',fontSize:13,fontWeight:600,lineHeight:18},
+          labelLine:{length:15,length2:10,lineStyle:{color:mutedColor}},
+          data:[
+            {value:106208,name:'Laki-laki',itemStyle:{color:maleColor}},
+            {value:102444,name:'Perempuan',itemStyle:{color:femaleColor}}
+          ]}]
+      });
+      window.addEventListener('resize',function(){c.resize();});
+    }catch(e){console.error(e);}
+  })(0);
+}
+initPieChart();
+</script>
+</html>
